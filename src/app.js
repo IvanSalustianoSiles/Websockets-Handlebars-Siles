@@ -9,7 +9,6 @@ import cartRoutes from "./routes/carts.routes.js";
 import handlebars from "express-handlebars";
 import viewRoutes from "./routes/views.routes.js";
 import { Server } from "socket.io";
-import { log } from "console";
 // Productos de ejemplo para agregar y probar el algoritmo.
 const [product1, product2, product3, productCambiado] = myProducts;
 const [cart1, cart2, cart3, cart4] = myCarts;
@@ -254,12 +253,16 @@ const httpServer = app.listen(config.PORT, () => {
 });
 
 const socketServer = new Server(httpServer);
+app.set("socketServer", socketServer);
 
 socketServer.on('connection', socket => {
   console.log(`Cliente conectado, id ${socket.id} desde ${socket.ad}.`);
   socket.on("newMessage", data => {
     console.log(data);
-
     socket.emit("secondMessage", "Mensaje recibido.");
+  });
+  socket.on("pid", pid => {
+    exampleProductManager.deleteProductById(+pid);
+    socket.emit("msgOfDelete", "Producto eliminado.");
   })
 })

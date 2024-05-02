@@ -13,7 +13,7 @@
     })
 
     const sendMessage = () => {
-        console.log("Mensaje enviado del cliente.")
+        console.log("Mensaje enviado del cliente.");
         if (chat.value !=="") {
             socketClient.emit("newMessage", chat.value);
         }

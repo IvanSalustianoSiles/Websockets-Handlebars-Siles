@@ -1,0 +1,55 @@
+<div>
+    <h1>Productos en tiempo real</h1>
+    <h2>Agregar producto</h2>
+    <form id="formAdd" action="/realtimeproducts" method="post" enctype="multipart/form-data">
+        <input placeholder="Title" type="text" id="title" name="title" required="true">
+        <input placeholder="Description" type="text" id="description" name="description" required="true">
+        <input placeholder="Price" type="number" id="price" name="price" required="true">
+        <input placeholder="Code" type="text" id="code" name="code" required="true">
+        <input placeholder="Stock" type="number" id="stock" name="stock" required="true">
+        <input placeholder="Category" type="text" id="category" name="category" required="true">
+        <input type="file" id="thumbnail" name="thumbnail" required="true">
+        <button onclick="sendProduct()" type="submit">Cargar</button>
+    </form>
+    <h2>Eliminar producto</h2>
+    <form id="formRemove">
+        <input placeholder="ID del producto" type="number" id="pid" name="pid" required="true">
+        <button onclick="deleteProduct()" type="submit">Eliminar</button>
+    </form>
+    <h2>Productos</h2>
+    <div>
+        {{#each toSendObject}}
+            <div>
+                <h2>{{title}}</h2>
+                <img src="/static/img/{{thumbnail}}" alt={{title}}>
+                <h3>${{price}}</h3>
+                <h4>Categoría: {{category}}</h4>
+                <p>{{description}}</p>
+                <h4>Quedan {{stock}} ejemplares</h4>
+            </div>      
+        {{/each}}
+    </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const socketClient = io();
+    const formAdd = document.getElementById("formAdd");
+    let pid = document.getElementById("pid");
+    const sendProduct = () => {
+        console.log("Producto enviado al servidor.");
+    }
+
+    const deleteProduct = () => {
+        console.log("Eliminando...");
+        socketClient.emit("pid", pid.value);
+    }
+
+    socketClient.on("productsPlusOne", products => {
+        console.log("Productos recibidos.");
+        socketClient.emit("receivedProducts", "El cliente recibió los productos.");
+    })
+        socketClient.on("msgOfDelete", msg => {
+        console.log(msg);
+    })
+</script>
