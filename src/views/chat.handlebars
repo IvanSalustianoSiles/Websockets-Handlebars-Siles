@@ -1,0 +1,21 @@
+<div>
+    <h1>Socket Chat</h1>
+    <input type="text" id="chat" placeholder="Ingrese un mensaje">
+    <button onclick="sendMessage()">Enviar</button>
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const socketClient = io();
+    const chat = document.getElementById("chat");
+
+    socketClient.on("secondMessage", data => {
+        console.log(data);
+    })
+
+    const sendMessage = () => {
+        console.log("Mensaje enviado del cliente.")
+        if (chat.value !=="") {
+            socketClient.emit("newMessage", chat.value);
+        }
+    }
+</script>

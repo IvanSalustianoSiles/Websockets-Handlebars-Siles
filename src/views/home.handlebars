@@ -1,0 +1,15 @@
+<div>
+    <h1>Productos</h1>
+    <div>
+        {{#each payload}}
+            <div>
+                <h2>{{title}}</h2>
+                <img src="/static/img/{{thumbnail}}" alt={{title}}>
+                <h3>${{price}}</h3>
+                <h4>Categoría: {{category}}</h4>
+                <p>{{description}}</p>
+                <h4>Quedan {{stock}} ejemplares</h4>
+            </div>      
+        {{/each}}
+    </div>
+</div>
