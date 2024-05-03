@@ -256,13 +256,9 @@ const socketServer = new Server(httpServer);
 app.set("socketServer", socketServer);
 
 socketServer.on('connection', socket => {
-  console.log(`Cliente conectado, id ${socket.id} desde ${socket.ad}.`);
+  console.log(`Cliente conectado; ID: ${socket.id}`);
   socket.on("newMessage", data => {
     console.log(data);
     socket.emit("secondMessage", "Mensaje recibido.");
   });
-  socket.on("pid", pid => {
-    exampleProductManager.deleteProductById(+pid);
-    socket.emit("msgOfDelete", "Producto eliminado.");
-  })
-})
+});
